@@ -1,13 +1,10 @@
 ---
-import { getCollection } from "astro:content";
+import BlogPost from "../components/BlogPost.astro";
 import { siteConfig } from "../config/site-config";
 import MainLayout from "../layouts/MainLayout.astro";
-import TypedBlogPost from "src/components/TypedBlogPost.astro";
 
-const blogPosts = await getCollection(
-	'blog',
-	(post) => post.data.isDraft === false
-);
+const posts = await Astro.glob('./posts-old/*.{md,mdx}');
+console.log(posts);
 ---
 
 <MainLayout title="Home Page">
@@ -17,11 +14,8 @@ const blogPosts = await getCollection(
 				{ siteConfig.title }
 			</h1>
 
-			<a href="/blog/1">Blog paginado</a>
-			<a href="/authors">Autores</a>
-
 			<div class="grid grid-cols-1 gap-8 mt-8 md:mt-16 md:grid-cols-2">
-				{ blogPosts.map((post) => <TypedBlogPost post={post} />) }
+				{ posts.map((post) => <BlogPost { ...post } />) }
 			</div>
 		</div>
 	</section>
